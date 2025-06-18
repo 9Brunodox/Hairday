@@ -1,6 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin")
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   target: "web",
@@ -16,7 +16,7 @@ module.exports = {
       directory: path.join(__dirname, "dist"),
     },
     port: 3000,
-    open: true,
+    open: false,
     liveReload: true,
   },
   plugins: [
@@ -25,12 +25,12 @@ module.exports = {
       favicon: path.resolve("src", "assets", "scissors.svg"),
     }),
     new CopyWebpackPlugin({
-        patterns: [
-            {
-                from: path.resolve(__dirname, "src", "assets"),
-                to: path.resolve(__dirname, "dist", "src", "assets")
-            }
-        ]
+      patterns: [
+        {
+          from: path.resolve(__dirname, "src", "assets"),
+          to: path.resolve(__dirname, "dist", "src", "assets"),
+        },
+      ],
     }),
   ],
 
@@ -44,12 +44,12 @@ module.exports = {
         test: /\.js$/i,
         exclude: /node_modules/,
         use: {
-            loader: "babel-loader",
-            options: {
-                presets: ["@babel/preset-env"],
-            }
-        }
-      }
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+          },
+        },
+      },
     ],
   },
 };

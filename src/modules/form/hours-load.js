@@ -5,14 +5,23 @@ import { hoursClick } from "./hours-click.js";
 const hours = document.getElementById("hours");
 
 export function hoursLoad({ date }) {
-  const opening = openingHours.map((hour) => {
-    // Mapeia o openingHours e retorna cada hora em "hour"
-    // Recupera somente a hora
-    const [scheduleHour] = hour.split(":");
+  
+  // Limpa a lista de horários
+  hours.innerHTML = ""
 
-    // Adiciona a hora na data e verifica se está no passado
-    const isHourPast = dayjs(date).add(scheduleHour, "hour").isAfter(dayjs()); // Pega a data e horário de hoje e verifica se o horário "isAfter" ou seja, se os horários disponíveis são depois do horário atual
-    console.log(scheduleHour, isHourPast);
+  // Mapeia o openingHours e retorna cada horário no formato "hh:mm"
+  const opening = openingHours.map((hour) => {
+    // Separa a hora e os minutos
+    const [scheduleHour, scheduleMinute] = hour.split(":").map(Number);
+
+    // Cria um horário novo juntando as horas e minutos atuais
+    const scheduleTime = dayjs(date)
+      .hour(scheduleHour) // Define a hora
+      .minute(scheduleMinute) // Define os minutos
+      .second(0); // Zera os segundos para precisão
+
+    // Verifica se o horário combinado ainda é futuro em relação ao momento atual
+    const isHourPast = scheduleTime.isAfter(dayjs()); // Pega a data e horário de hoje e verifica se o horário "isAfter" ou seja, se os horários disponíveis são depois do horário atual
 
     // Define se o horário está disponível
     return {

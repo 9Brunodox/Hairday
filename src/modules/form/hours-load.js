@@ -4,10 +4,12 @@ import { hoursClick } from "./hours-click.js";
 
 const hours = document.getElementById("hours");
 
-export function hoursLoad({ date }) {
+export function hoursLoad({ date, dailySchedules }) {
   
   // Limpa a lista de horários
   hours.innerHTML = ""
+
+  const unavailableHours = dailySchedules.map((schedule) => dayjs(schedule.when).format("HH:mm"))
 
   // Mapeia o openingHours e retorna cada horário no formato "hh:mm"
   const opening = openingHours.map((hour) => {
@@ -21,12 +23,14 @@ export function hoursLoad({ date }) {
       .second(0); // Zera os segundos para precisão
 
     // Verifica se o horário combinado ainda é futuro em relação ao momento atual
-    const isHourPast = scheduleTime.isAfter(dayjs()); // Pega a data e horário de hoje e verifica se o horário "isAfter" ou seja, se os horários disponíveis são depois do horário atual
+    const isHourAfter = scheduleTime.isAfter(dayjs()); 
+    
+    const available = !unavailableHours.includes(hour) && isHourAfter// Pega a data e horário de hoje e verifica se o horário "isAfter" ou seja, se os horários disponíveis são depois do horário atual
 
     // Define se o horário está disponível
     return {
       hour,
-      available: isHourPast,
+      available,
     };
   });
 
